@@ -1,0 +1,16 @@
+package dropbot_dx;
+
+message State {
+  /* # State structure #
+   *
+   * This structure contains fields that can easily be updated through the
+   * `update_state` method, but are *not* saved across device resets (i.e., are
+   * only stored in RAM). */
+  optional float voltage = 1 [default = 100];
+  optional float frequency = 2 [default = 10000];
+  optional bool hv_output_enabled = 3 [default = false];
+  optional bool hv_output_selected = 4 [default = true];
+  optional bool light_enabled = 5 [default = true];
+  optional bool magnet_engaged = 6 [default = false];
+}
+

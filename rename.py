@@ -65,4 +65,4 @@ def parse_args(args=None):
 
 if __name__ == '__main__':
     args = parse_args()
-    main('.', 'teensy-minimal-rpc', args.new_name)
+    main('.', 'dropbot-dx', args.new_name)
