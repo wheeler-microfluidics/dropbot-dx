@@ -70,7 +70,7 @@ const size_t FRAME_SIZE = (3 * sizeof(uint8_t)  // Frame boundary
                            - sizeof(uint16_t));  // CRC
 
 class Node;
-const char HARDWARE_VERSION_[] = "0.1";
+const char HARDWARE_VERSION_[] = "0.3";
 
 typedef nanopb::EepromMessage<dropbot_dx_Config,
                               config_validate::Validator<Node> > config_t;
