@@ -251,11 +251,9 @@ public:
   }
 
   bool _set_voltage(float voltage) {
-    float R2 = 1e6;
-    float R1 = 4e3;
-    const float POT_MAX = 50e3;
-    float value = R2 / ( 2 * voltage / 1.5 - 1 ) - R1;
-    if ( voltage <= MAX_VOLTAGE && value < POT_MAX && value > 0 ) {
+    float R6 = 1e6;
+    float value = R6 / ( 2 * voltage / 1.5 - 1 ) - config_._.R7;
+    if ( voltage <= MAX_VOLTAGE && value < config_._.pot_max && value > 0 ) {
       // This method is triggered whenever a voltage is included in a state
       // update.
 
@@ -265,7 +263,7 @@ public:
       // send Command to write value and enable the pot
       shiftOut(MOSI_PIN, SCK_PIN, MSBFIRST, 0x1F);
       // send in the value via SPI:
-      shiftOut(MOSI_PIN, SCK_PIN, MSBFIRST, 255 - value / POT_MAX * 255);
+      shiftOut(MOSI_PIN, SCK_PIN, MSBFIRST, 255 - value / config_._.pot_max * 255);
 
       // take the SS pin high to de-select the chip:
       digitalWrite(MCP41050_CS_PIN, HIGH);
