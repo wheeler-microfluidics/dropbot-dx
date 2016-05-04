@@ -35,8 +35,11 @@ try:
             self.initialize_switching_boards()
 
         def __del__(self):
-            # turn off the high voltage when we disconnect
-            self.hv_output_enabled = False
+            try:
+                # turn off the high voltage when we disconnect
+                self.hv_output_enabled = False
+            except: # ignore any exceptions (e.g., if we can't communicate with the board)
+                pass
 
         def get_environment_state(self, i2c_address=0x27):
                     '''
