@@ -31,8 +31,11 @@ try:
 
         def __init__(self, *args, **kwargs):
             super(ProxyMixin, self).__init__(*args, **kwargs)
-            # embeded version isn't working with teensy. Use this for now:
-            self.initialize_switching_boards()
+            # can't access i2c bus if the control board is connected, so for now, need to explicitly initialize
+            # switching boards (e.g., from the dropbot-dx plugin)
+            #
+            # # embeded version isn't working with teensy. Use this for now:
+            # #self.initialize_switching_boards()
 
         def __del__(self):
             try:
