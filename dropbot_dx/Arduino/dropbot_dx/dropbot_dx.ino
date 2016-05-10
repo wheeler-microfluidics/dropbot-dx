@@ -9,6 +9,8 @@
 #include "CArrayDefs.h"
 #include "RPCBuffer.h"
 #include "BaseNodeRpc.h"  // Check for changes (may have removed some include statements...
+#include "TeensyMinimalRpc.h"
+#include "TimerOne.h"
 #include "DropbotDx.h"
 #include "NodeCommandProcessor.h"
 #include "ADC.h"
