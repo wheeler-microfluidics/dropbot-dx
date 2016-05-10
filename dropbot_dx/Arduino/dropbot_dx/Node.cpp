@@ -2,10 +2,6 @@
 
 namespace dropbot_dx {
 
-const float Node::MIN_FREQUENCY = 0;
-const float Node::MAX_FREQUENCY = 100e3;
-const float Node::MAX_VOLTAGE = 200;
-
 void Node::begin() {
   pinMode(LIGHT_PIN, OUTPUT);
   pinMode(HIGH_PIN, OUTPUT);

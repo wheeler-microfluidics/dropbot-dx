@@ -116,10 +116,6 @@ public:
   static const uint8_t PCA9505_CONFIG_IO_REGISTER = 0x18;
   static const uint8_t PCA9505_OUTPUT_PORT_REGISTER = 0x08;
 
-  static const float MIN_FREQUENCY;
-  static const float MAX_FREQUENCY;
-  static const float MAX_VOLTAGE;
-
   // use dma with ADC0
   RingBufferDMA *dmaBuffer_;
 
@@ -182,9 +178,6 @@ public:
   void set_number_of_channels(uint16_t number_of_channels) { number_of_channels_ = number_of_channels; }
   UInt8Array hardware_version() { return UInt8Array_init(strlen(HARDWARE_VERSION_),
                       (uint8_t *)&HARDWARE_VERSION_[0]); }
-  float min_waveform_frequency() { return MIN_FREQUENCY; }
-  float max_waveform_frequency() { return MAX_FREQUENCY; }
-  float max_waveform_voltage() { return MAX_VOLTAGE; }
 
   UInt8Array state_of_channels() {
     for (uint8_t chip = 0; chip < number_of_channels_ / 40; chip++) {
@@ -235,8 +228,8 @@ public:
   bool on_state_frequency_changed(float frequency) {
     /* This method is triggered whenever a frequency is included in a state
      * update. */
-    if ((MIN_FREQUENCY <= frequency) &&
-                (frequency <= MAX_FREQUENCY)) {
+    if ((config_._.min_frequency <= frequency) &&
+                (frequency <= config_._.max_frequency)) {
       if (frequency == 0) { // DC mode
         digitalWrite(Node::HIGH_PIN, HIGH); // set not blanked pin high
         digitalWrite(Node::LOW_PIN, LOW); // set not blanked pin high
@@ -253,7 +246,7 @@ public:
   bool _set_voltage(float voltage) {
     float R6 = 1e6;
     float value = R6 / ( 2 * voltage / 1.5 - 1 ) - config_._.R7;
-    if ( voltage <= MAX_VOLTAGE && value < config_._.pot_max && value > 0 ) {
+    if ( voltage <= config_._.max_voltage && value < config_._.pot_max && value > 0 ) {
       // This method is triggered whenever a voltage is included in a state
       // update.
 

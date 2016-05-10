@@ -228,15 +228,15 @@ try:
 
         @property
         def min_waveform_frequency(self):
-            return super(ProxyMixin, self).min_waveform_frequency()
+            return self.config['min_frequency']
 
         @property
         def max_waveform_frequency(self):
-            return super(ProxyMixin, self).max_waveform_frequency()
+            return self.config['max_frequency']
 
         @property
         def max_waveform_voltage(self):
-            return super(ProxyMixin, self).max_waveform_voltage()
+            return self.config['max_voltage']
 
         def initialize_switching_boards(self):
             """
