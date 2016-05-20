@@ -207,6 +207,17 @@ public:
                       (uint8_t *)&state_of_channels_[0]);
   }
 
+  bool set_instrument_id(UInt8Array instrument_id) {
+    if (instrument_id.length > sizeof(config_._.instrument_id) - 1) {
+      return false;
+    }
+    memcpy(config_._.instrument_id, &instrument_id.data[0], instrument_id.length);
+    config_._.instrument_id[instrument_id.length] = 0;
+    config_._.has_instrument_id = true;
+    config_.save();
+    return true;
+  }
+
   bool set_state_of_channels(UInt8Array channel_states) {
     if (channel_states.length == number_of_channels_ / 8) {
       for (uint16_t i = 0; i < channel_states.length; i++) {

@@ -199,8 +199,8 @@ try:
             return self.config['instrument_id']
 
         @instrument_id.setter
-        def serial_number(self, serial_number):
-            return self.update_config(instrument_id=instrument_id)
+        def instrument_id(self, instrument_id):
+            return self.set_instrument_id(instrument_id)
 
         @property
         def uuid(self):
