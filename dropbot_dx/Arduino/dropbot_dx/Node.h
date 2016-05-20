@@ -178,6 +178,13 @@ public:
   void set_number_of_channels(uint16_t number_of_channels) { number_of_channels_ = number_of_channels; }
   UInt8Array hardware_version() { return UInt8Array_init(strlen(HARDWARE_VERSION_),
                       (uint8_t *)&HARDWARE_VERSION_[0]); }
+  UInt8Array _uuid() {
+    /* Read unique chip identifier. */
+    UInt8Array result = get_buffer();
+    result.length = 4 * sizeof(uint32_t);
+    memcpy(&result.data[0], &SIM_UIDH, result.length);
+    return result;
+  }
 
   UInt8Array state_of_channels() {
     for (uint8_t chip = 0; chip < number_of_channels_ / 40; chip++) {

@@ -1,6 +1,8 @@
 import pkg_resources
 import time
+import uuid
 
+import numpy as np
 from path_helpers import path
 try:
     from base_node_rpc.proxy import ConfigMixinBase, StateMixinBase
@@ -199,7 +201,21 @@ try:
         @serial_number.setter
         def serial_number(self, serial_number):
             return self.update_config(serial_number=serial_number)
-        
+
+        @property
+        def uuid(self):
+            '''
+            Returns
+            -------
+
+                (uuid.UUID) : UUID constructed from the [Unique Identification
+                    Register][1] (12.2.19 page 265).
+
+            [1]: https://www.pjrc.com/teensy/K20P64M72SF1RM.pdf
+            '''
+            return uuid.UUID(bytes=np.array(self._uuid(),
+                                            dtype='uint8').tostring())
+
         @property
         def port(self):
             return self._stream.serial_device.port
