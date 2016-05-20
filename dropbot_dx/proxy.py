@@ -47,40 +47,40 @@ try:
                 pass
 
         def get_environment_state(self, i2c_address=0x27):
-                    '''
-                    Acquire temperature and humidity from Honeywell HIH6000 series
-                    sensor.
+            '''
+            Acquire temperature and humidity from Honeywell HIH6000 series
+            sensor.
 
-                    [1]: http://sensing.honeywell.com/index.php/ci_id/142171/la_id/1/document/1/re_id/0
-                    '''
-                    import pandas as pd
+            [1]: http://sensing.honeywell.com/index.php/ci_id/142171/la_id/1/document/1/re_id/0
+            '''
+            import pandas as pd
 
-                    # Trigger measurement.
-                    self.i2c_write(i2c_address, [])
-                    time.sleep(.01)
+            # Trigger measurement.
+            self.i2c_write(i2c_address, [])
+            time.sleep(.01)
 
-                    while True:
-                        # Read 4 bytes from sensor.
-                        humidity_data, temperature_data = self.i2c_read(i2c_address,
-                                                                        4).view('>u2')
-                        status_code = (humidity_data >> 14) & 0x03
-                        if status_code == 0:
-                            # Measurement completed successfully.
-                            break
-                        elif status_code > 1:
-                            raise IOError('Error reading from sensor.')
-                        # Measurement data is stale (i.e., measurement still in
-                        # progress).  Try again.
-                        time.sleep(.001)
+            while True:
+                # Read 4 bytes from sensor.
+                humidity_data, temperature_data = self.i2c_read(i2c_address,
+                                                                4).view('>u2')
+                status_code = (humidity_data >> 14) & 0x03
+                if status_code == 0:
+                    # Measurement completed successfully.
+                    break
+                elif status_code > 1:
+                    raise IOError('Error reading from sensor.')
+                # Measurement data is stale (i.e., measurement still in
+                # progress).  Try again.
+                time.sleep(.001)
 
-                    # See URL from docstring for source of equations.
-                    relative_humidity = float(humidity_data & 0x03FFF) / ((1 << 14) - 2)
-                    temperature_celsius = (float((temperature_data >> 2) & 0x3FFF) /
-                                           ((1 << 14) - 2) * 165 - 40)
+            # See URL from docstring for source of equations.
+            relative_humidity = float(humidity_data & 0x03FFF) / ((1 << 14) - 2)
+            temperature_celsius = (float((temperature_data >> 2) & 0x3FFF) /
+                                   ((1 << 14) - 2) * 165 - 40)
 
-                    return pd.Series([relative_humidity, temperature_celsius],
-                                     index=['relative_humidity',
-                                            'temperature_celsius'])
+            return pd.Series([relative_humidity, temperature_celsius],
+                             index=['relative_humidity',
+                                    'temperature_celsius'])
 
         @property
         def magnet_engaged(self):
