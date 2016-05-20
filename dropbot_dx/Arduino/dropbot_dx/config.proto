@@ -11,8 +11,8 @@ message Config {
    *
    * This makes it possible for clients/devices based on the base-node-rpc
    * package to interface with each other. */
-  optional uint32 serial_number = 1;
-  // optional uint32 baud_rate = 2 [default = 115200];  // deprecated to save memory
+  // optional uint32 serial_number = 1; // deprecated
+  // optional uint32 baud_rate = 2 [default = 115200]; // deprecated
   optional uint32 i2c_address = 3;
 
   /* Start new fields below.
@@ -30,4 +30,5 @@ message Config {
   optional float max_voltage =  56 [default = 200];
   optional float min_frequency =  57 [default = 100];
   optional float max_frequency =  58 [default = 50e3];
+  optional string instrument_id = 59 [default = ''];
 }

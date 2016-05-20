@@ -195,12 +195,12 @@ try:
             return self.update_config(baud_rate=baud_rate)
 
         @property
-        def serial_number(self):
-            return self.config['serial_number']
+        def instrument_id(self):
+            return self.config['instrument_id']
 
-        @serial_number.setter
+        @instrument_id.setter
         def serial_number(self, serial_number):
-            return self.update_config(serial_number=serial_number)
+            return self.update_config(instrument_id=instrument_id)
 
         @property
         def uuid(self):
