@@ -30,5 +30,5 @@ message Config {
   optional float max_voltage =  56 [default = 200];
   optional float min_frequency =  57 [default = 100];
   optional float max_frequency =  58 [default = 50e3];
-  optional string instrument_id = 59 [default = ''];
+  optional string id = 59 [default = ''];
 }

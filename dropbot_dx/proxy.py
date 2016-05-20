@@ -195,12 +195,12 @@ try:
             return self.update_config(baud_rate=baud_rate)
 
         @property
-        def instrument_id(self):
-            return self.config['instrument_id']
+        def id(self):
+            return self.config['id']
 
-        @instrument_id.setter
-        def instrument_id(self, instrument_id):
-            return self.set_instrument_id(instrument_id)
+        @id.setter
+        def id(self, id):
+            return self.set_id(id)
 
         @property
         def uuid(self):

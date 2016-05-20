@@ -207,13 +207,13 @@ public:
                       (uint8_t *)&state_of_channels_[0]);
   }
 
-  bool set_instrument_id(UInt8Array instrument_id) {
-    if (instrument_id.length > sizeof(config_._.instrument_id) - 1) {
+  bool set_id(UInt8Array id) {
+    if (id.length > sizeof(config_._.id) - 1) {
       return false;
     }
-    memcpy(config_._.instrument_id, &instrument_id.data[0], instrument_id.length);
-    config_._.instrument_id[instrument_id.length] = 0;
-    config_._.has_instrument_id = true;
+    memcpy(config_._.id, &id.data[0], id.length);
+    config_._.id[id.length] = 0;
+    config_._.has_id = true;
     config_.save();
     return true;
   }
