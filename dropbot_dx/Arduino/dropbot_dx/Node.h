@@ -20,11 +20,11 @@
 #include <ADC.h>
 #include <RingBufferDMA.h>
 #include <DMAChannel.h>
-#include <DropbotDx/ADC.h>  // Analog to digital converter
-#include <DropbotDx/DMA.h>  // Direct Memory Access
-#include <DropbotDx/SIM.h>  // System integration module (clock gating)
-#include <DropbotDx/PIT.h>  // Programmable interrupt timer
-#include <DropbotDx/aligned_alloc.h>
+#include <TeensyMinimalRpc/ADC.h>  // Analog to digital converter
+#include <TeensyMinimalRpc/DMA.h>  // Direct Memory Access
+#include <TeensyMinimalRpc/SIM.h>  // System integration module (clock gating)
+#include <TeensyMinimalRpc/PIT.h>  // Programmable interrupt timer
+#include <TeensyMinimalRpc/aligned_alloc.h>
 #include <pb_cpp_api.h>
 #include <pb_validate.h>
 #include <pb_eeprom.h>
@@ -82,7 +82,7 @@ class Node :
   public BaseNodeEeprom,
   public BaseNodeI2c,
   public BaseNodeConfig<config_t>,
-  public BaseNodeState<state_t>,  
+  public BaseNodeState<state_t>,
 #ifndef DISABLE_SERIAL
   public BaseNodeSerialHandler,
 #endif  // #ifndef DISABLE_SERIAL
@@ -278,7 +278,7 @@ public:
 
       // take the SS pin high to de-select the chip:
       digitalWrite(MCP41050_CS_PIN, HIGH);
-      
+
       return true;
     }
     return false;
