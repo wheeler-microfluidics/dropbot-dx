@@ -45,6 +45,7 @@ try:
                 self.hv_output_enabled = False
             except: # ignore any exceptions (e.g., if we can't communicate with the board)
                 pass
+            super(ProxyMixin, self).__del__()
 
         def get_environment_state(self, i2c_address=0x27):
             '''
