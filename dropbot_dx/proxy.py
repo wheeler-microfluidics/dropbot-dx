@@ -91,6 +91,14 @@ try:
         def magnet_engaged(self, value):
             self.update_state(magnet_engaged=value)
 
+        def pulse_magnet(self, pulse_time_ms=600, n_pulses=3):
+            state = self.magnet_engaged
+            for i in range(n_pulses):
+                self.magnet_engaged = not state
+                time.sleep(pulse_time_ms / 1000.0)
+                self.magnet_engaged = state
+                time.sleep(pulse_time_ms / 1000.0)
+
         @property
         def light_intensity(self):
             return self.config['light_intensity']
