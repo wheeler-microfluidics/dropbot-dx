@@ -106,7 +106,7 @@ public:
   static const uint8_t MCP41050_CS_PIN = 10;
   static const uint8_t SHDN_PIN = 4;
 
-  static const uint8_t HV_OUTPUT_SELECT_PIN = 3;
+  static const uint8_t HV_OUTPUT_SELECT_PIN = 8;
 
   // SPI pins
   static const uint8_t SCK_PIN = 13;
@@ -262,7 +262,7 @@ public:
   }
 
   bool _set_voltage(float voltage) {
-    float R6 = 1e6;
+    float R6 = 2e6;
     float value = R6 / ( 2 * voltage / 1.5 - 1 ) - config_._.R7;
     if ( voltage <= config_._.max_voltage && value < config_._.pot_max && value > 0 ) {
       // This method is triggered whenever a voltage is included in a state
@@ -278,7 +278,6 @@ public:
 
       // take the SS pin high to de-select the chip:
       digitalWrite(MCP41050_CS_PIN, HIGH);
-
       return true;
     }
     return false;

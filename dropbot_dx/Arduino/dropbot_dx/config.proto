@@ -25,10 +25,10 @@ message Config {
   optional uint32 disengaged_angle = 51 [default = 103];
   optional float light_intensity = 52 [default = 0.01];
   optional uint32 switching_board_i2c_address =  53 [default = 32];
-  optional float R7 =  54 [default = 2e3];
+  optional float R7 =  54 [default = 10e3];
   optional float pot_max =  55 [default = 50e3];
-  optional float max_voltage =  56 [default = 200];
+  optional float max_voltage =  56 [default = 150];
   optional float min_frequency =  57 [default = 100];
-  optional float max_frequency =  58 [default = 50e3];
+  optional float max_frequency =  58 [default = 10e3];
   optional string id = 59 [default = ''];
 }

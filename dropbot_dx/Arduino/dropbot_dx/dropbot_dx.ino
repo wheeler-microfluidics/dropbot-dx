@@ -5,6 +5,7 @@
 #include "Memory.h"  // Required replacing memory functions with stubs returning 0.
 #include "ArduinoRpc.h"
 #include "nanopb.h"
+
 #include "NadaMQ.h"  // Required replacing `#ifndef AVR` with `#if !defined(AVR) && !defined(__arm__)`
 #include "CArrayDefs.h"
 #include "RPCBuffer.h"
