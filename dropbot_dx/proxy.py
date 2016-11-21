@@ -1,9 +1,32 @@
-import pkg_resources
 import time
 import uuid
 
-import numpy as np
 from path_helpers import path
+import numpy as np
+import serial_device as sd
+
+
+def serial_ports():
+    '''
+    Returns
+    -------
+    pandas.DataFrame
+        Table of serial ports that match the USB vendor ID and product ID for
+        the `Teensy 3.2`_ board.
+
+    .. Teensy 3.2: https://www.pjrc.com/store/teensy32.html
+    '''
+    df_comports = sd.comports()
+    # Match COM ports with USB vendor ID and product IDs for [Teensy 3.2
+    # device][1].
+    #
+    # [1]: https://www.pjrc.com/store/teensy32.html
+    df_teensy_comports = df_comports.loc[df_comports.hardware_id.str
+                                         .contains('VID:PID=16c0:0483',
+                                                   case=False)]
+    return df_teensy_comports
+
+
 try:
     from base_node_rpc.proxy import ConfigMixinBase, StateMixinBase
     from .node import (Proxy as _Proxy, I2cProxy as _I2cProxy,
@@ -118,7 +141,7 @@ try:
         @property
         def frequency(self):
             return self.state['frequency']
-        
+
         @frequency.setter
         def frequency(self, value):
             return self.update_state(frequency=value)
@@ -193,13 +216,13 @@ try:
             See also: `state_of_channels` (get)
             '''
             import numpy as np
-            
+
             ok = (super(ProxyMixin, self)
                     .set_state_of_channels(np.packbits(states.astype(int)[::-1])[::-1]))
             if not ok:
                 raise ValueError('Error setting state of channels.  Check '
                                  'number of states matches channel count.')
-                
+
         @property
         def baud_rate(self):
             return self.config['baud_rate']
@@ -237,10 +260,10 @@ try:
         @port.setter
         def port(self, port):
             return self.update_config(port=port)
-        
+
         def _number_of_channels(self):
             return super(ProxyMixin, self).number_of_channels()
-        
+
         @property
         def number_of_channels(self):
             return self._number_of_channels()
@@ -317,7 +340,16 @@ try:
         pass
 
     class SerialProxy(ProxyMixin, _SerialProxy):
-        pass
+        def __init__(self, **kwargs):
+            if 'port' not in kwargs:
+                # No port was explicitly set.  Only try connecting to ports
+                # that correspond to a [Teensy 3.2 device][1].
+                #
+                # [1]: https://www.pjrc.com/store/teensy32.html
+                port = serial_ports().index.tolist()
+                if port:
+                    kwargs['port'] = port
+            super(SerialProxy, self).__init__(**kwargs)
 
 except (ImportError, TypeError):
     Proxy = None

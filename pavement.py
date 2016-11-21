@@ -2,8 +2,8 @@ from collections import OrderedDict
 import sys
 from importlib import import_module
 
-from paver.easy import task, needs, path, sh, cmdopts, options
-from paver.setuputils import setup, find_package_data, install_distutils_tasks
+from paver.easy import path, options
+from paver.setuputils import install_distutils_tasks
 try:
     from base_node_rpc.pavement_base import *
 except ImportError:
@@ -62,6 +62,7 @@ options(
                url=URL,
                license='GPLv2',
                install_requires=['base-node-rpc>=0.16.post3',
+                                 'serial-device>=0.3',
                                  'arduino-rpc>=1.7.post20'],
                include_package_data=True,
                packages=[str(PROJECT_PREFIX)]))
