@@ -119,6 +119,8 @@ public:
   // use dma with ADC0
   RingBufferDMA *dmaBuffer_;
 
+  static const float R6;
+
   uint8_t buffer_[BUFFER_SIZE];
   uint8_t state_of_channels_[MAX_NUMBER_OF_CHANNELS / 8];
   uint16_t number_of_channels_;
@@ -261,10 +263,13 @@ public:
     return false;
   }
 
+  float min_waveform_voltage() {
+    return 1.5 / 2.0 * (R6 / (config_._.pot_max + config_._.R7) + 1);
+  }
+
   bool _set_voltage(float voltage) {
-    float R6 = 2e6;
     float value = R6 / ( 2 * voltage / 1.5 - 1 ) - config_._.R7;
-    if ( voltage <= config_._.max_voltage && value < config_._.pot_max && value > 0 ) {
+    if ( voltage <= config_._.max_voltage && value <= config_._.pot_max && value >= 0 ) {
       // This method is triggered whenever a voltage is included in a state
       // update.
 

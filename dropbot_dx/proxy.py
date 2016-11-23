@@ -291,6 +291,11 @@ try:
         def max_waveform_voltage(self):
             return self.config['max_voltage']
 
+        @property
+        def min_waveform_voltage(self):
+            return float(super(ProxyMixin, self).min_waveform_voltage())
+
+
         def initialize_switching_boards(self):
             """
             Embeded version of this function is not detecting switching boards properly. Use this for now...

@@ -2,6 +2,8 @@
 
 namespace dropbot_dx {
 
+const float Node::R6 = 2e6;
+
 void Node::begin() {
   pinMode(LIGHT_PIN, OUTPUT);
   pinMode(HIGH_PIN, OUTPUT);
