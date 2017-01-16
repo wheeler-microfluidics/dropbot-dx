@@ -1,3 +1,4 @@
+syntax="proto2";
 package dropbot_dx;
 
 message Config {
