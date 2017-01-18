@@ -13,7 +13,7 @@ if errorlevel 1 exit 1
 REM Copy Arduino library to Conda include directory
 xcopy /S /Y /I /Q "%SRC_DIR%"\lib\DropbotDx "%PREFIX%"\Library\include\Arduino\DropbotDx
 REM Copy compiled firmware to Conda bin directory
-xcopy /S /Y /I /Q "%SRC_DIR%"\.pioenvs\teensy31\firmware.hex "%PREFIX%"\Library\bin\dropbot-dx\teensy31.hex
+copy "%SRC_DIR%"\.pioenvs\teensy31\firmware.hex "%PREFIX%"\Library\bin\dropbot-dx\teensy31.hex
 if errorlevel 1 exit 1
 
 REM Generate `setup.py` from `pavement.py` definition.

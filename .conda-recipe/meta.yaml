@@ -13,16 +13,24 @@ package:
 
 requirements:
   build:
-    - teensy-minimal-rpc >=0.3.0
+    - arduino-linked-list >=1.2.3
     - future
+    - nanopb-helpers >=0.6
     - paver
     - pip
-    - platformio
+    - platformio-framework-arduinoteensy
+    - platformio-tool-scons
+    - platformio-tool-teensy
+    - platformio-toolchain-gccarmnoneeabi
     - python 2.7*
+    - teensy-minimal-rpc >=0.3.0
 
   run:
-    - teensy-minimal-rpc >=0.3.0
+    - arduino-linked-list >=1.2.3
+    - nanopb-helpers >=0.6
+    - platformio-tool-teensy
     - python 2.7*
+    - teensy-minimal-rpc >=0.3.0
 
 about:
   home: https://github.com/wheeler-microfluidics/dropbot-dx
