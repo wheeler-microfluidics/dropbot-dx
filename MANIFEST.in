@@ -6,6 +6,7 @@ include pavement.py
 include paver-minilib.zip
 include setup.py
 include SConstruct
+include platformio.ini
 recursive-include dropbot_dx *
 recursive-exclude dropbot_dx *.pyc
 recursive-exclude dropbot_dx *.o
