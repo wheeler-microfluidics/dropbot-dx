@@ -57,7 +57,7 @@ void Node::begin() {
   Timer1.attachInterrupt(timer_callback);
 
   // this method needs to be called after initializing the Timer1 library!
-  servo_.attach(SERVO_PIN);
+  servo_.attach(config_._.servo_pin);
 
   //_initialize_switching_boards();
 }

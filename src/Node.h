@@ -97,7 +97,6 @@ public:
 
   static const uint16_t MAX_NUMBER_OF_CHANNELS = 120;
 
-  static const uint8_t SERVO_PIN = 2;
   static const uint8_t HIGH_PIN = 6;
   static const uint8_t LOW_PIN = 7;
   static const uint8_t LIGHT_PIN = 5;
@@ -322,6 +321,11 @@ public:
     } else {
       _magnet_disengage();
     }
+    return true;
+  }
+
+  bool on_config_servo_pin_changed(uint32_t value) {
+    servo_.attach(value);
     return true;
   }
 
