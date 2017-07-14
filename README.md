@@ -1,3 +1,4 @@
+![https://ci.appveyor.com/api/projects/status/github/wheeler-microfluidics/dropbot-dx?branch=master&svg=true](https://ci.appveyor.com/api/projects/status/github/wheeler-microfluidics/dropbot-dx?branch=master&svg=true)
 # dropbot-dx #
 
 Template package for remote procedure call (RPC) project, utilizing
