@@ -5,7 +5,7 @@ environment:
       MINICONDA: C:\Miniconda
       PYTHON_ARCH: "32"
 
-version: '1.5.11'
+version: '1.5.12'
 
 init:
   - "ECHO %PYTHON_VERSION% %MINICONDA%"
