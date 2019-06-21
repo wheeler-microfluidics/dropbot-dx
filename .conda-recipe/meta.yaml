@@ -18,6 +18,7 @@ requirements:
     - nanopb-helpers >=0.6
     - paver
     - pip
+    - platformio
     - platformio-framework-arduinoteensy
     - platformio-helpers
     - platformio-tool-scons
