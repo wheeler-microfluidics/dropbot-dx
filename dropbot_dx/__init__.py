@@ -7,6 +7,10 @@ except (ImportError, TypeError):
     pass
 from .proxy import Proxy, I2cProxy, SerialProxy, serial_ports
 
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
+
 
 def package_path():
     return path(__file__).parent
@@ -70,4 +74,3 @@ def get_firmwares():
                                           board_dir.walkfiles('*.hex')])
                         for board_dir in
                         package_path().joinpath('firmware').dirs()])
-

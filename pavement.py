@@ -12,8 +12,7 @@ except ImportError:
     warnings.warn('Could not import `base_node_rpc` (expected during '
                   'install).')
 
-sys.path.insert(0, '.')
-import version
+import versioneer
 install_distutils_tasks()
 
 DEFAULT_ARDUINO_BOARDS = []  #['mega2560']
@@ -21,7 +20,7 @@ PROJECT_PREFIX = 'dropbot_dx'
 module_name = PROJECT_PREFIX
 package_name = module_name.replace('_', '-')
 rpc_module = import_module(PROJECT_PREFIX)
-VERSION = version.getVersion()
+VERSION = versioneer.get_version()
 URL='http://github.com/wheeler-microfluidics/%s.git' % package_name
 PROPERTIES = OrderedDict([('package_name', package_name),
                           ('display_name', 'DropBot DX'),
@@ -54,6 +53,7 @@ options(
     DEFAULT_ARDUINO_BOARDS=DEFAULT_ARDUINO_BOARDS,
     setup=dict(name=package_name,
                version=VERSION,
+               cmdclass=versioneer.get_cmdclass(),
                description=LIB_PROPERTIES['short_description'],
                author='Christian Fobel',
                author_email='christian@fobel.net',
