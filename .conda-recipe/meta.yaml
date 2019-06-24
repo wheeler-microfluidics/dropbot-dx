@@ -14,6 +14,7 @@ package:
 requirements:
   build:
     - arduino-linked-list >=1.2.3
+    - base-node-rpc >=0.51.4
     - future
     - nanopb-helpers >=0.6
     - paver
@@ -29,6 +30,7 @@ requirements:
 
   run:
     - arduino-linked-list >=1.2.3
+    - base-node-rpc >=0.51.4
     - nanopb-helpers >=0.6
     - platformio-helpers
     - platformio-tool-teensy
