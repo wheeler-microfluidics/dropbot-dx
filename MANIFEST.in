@@ -1,7 +1,5 @@
 include COPYING
 include README.md
-include RELEASE-VERSION
-include version.py
 include pavement.py
 include paver-minilib.zip
 include setup.py
@@ -12,3 +10,5 @@ recursive-exclude dropbot_dx *.pyc
 recursive-exclude dropbot_dx *.o
 recursive-exclude dropbot_dx *.exe
 recursive-exclude dropbot_dx .ipynb_checkpoints/*
+include versioneer.py
+include dropbot_dx/_version.py

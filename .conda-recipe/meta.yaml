@@ -14,24 +14,27 @@ package:
 requirements:
   build:
     - arduino-linked-list >=1.2.3
+    - base-node-rpc >=0.51.4
     - future
     - nanopb-helpers >=0.6
     - paver
     - pip
+    - platformio
     - platformio-framework-arduinoteensy
     - platformio-helpers
     - platformio-tool-scons
     - platformio-tool-teensy
     - platformio-toolchain-gccarmnoneeabi
-    - python 2.7*
+    - python
     - teensy-minimal-rpc >=0.3.0
 
   run:
     - arduino-linked-list >=1.2.3
+    - base-node-rpc >=0.51.4
     - nanopb-helpers >=0.6
     - platformio-helpers
     - platformio-tool-teensy
-    - python 2.7*
+    - python
     - teensy-minimal-rpc >=0.3.0
 
 about:

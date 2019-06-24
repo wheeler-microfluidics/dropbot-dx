@@ -355,85 +355,8 @@ public:
   void _magnet_disengage() { servo_.write(config_._.disengaged_angle); }
 
   float test(float a) { return 2 * a; }
-  UInt8Array dma_tcd() {
-    /* Return serialized "Transfer control descriptor" of DMA channel. */
-    UInt8Array result = get_buffer();
-    if (dmaBuffer_ == NULL) {
-      result.length = 0;
-      return result;
-    }
-    typedef typename DMABaseClass::TCD_t tcd_t;
-    tcd_t &tcd = *reinterpret_cast<tcd_t *>(result.data);
-    result.length = sizeof(tcd_t);
-    tcd = *(dmaBuffer_->dmaChannel->TCD);
-    return result;
-  }
-  bool dma_start(uint32_t buffer_size) {
-    const bool power_of_two = (buffer_size &&
-                               !(buffer_size & (buffer_size - 1)));
-    if ((buffer_size > ADC_BUFFER_SIZE) || !power_of_two) { return false; }
-    dma_stop();
-    dmaBuffer_ = new RingBufferDMA(dropbot_dx::adc_buffer,
-                                   buffer_size, ADC_0);
-    dmaBuffer_->start();
-    return true;
-  }
-  void dma_stop() {
-    if (dmaBuffer_ != NULL) { delete dmaBuffer_; }
-  }
-  int16_t dma_read() { return (dmaBuffer_ == NULL) ? 0 : dmaBuffer_->read(); }
-  bool dma_full() { return (dmaBuffer_ == NULL) ? 0 : dmaBuffer_->isFull(); }
-  bool dma_empty() { return (dmaBuffer_ == NULL) ? 0 : dmaBuffer_->isEmpty(); }
-  //uint32_t dma_available() { return (dmaBuffer_ == NULL) ? 0 : dmaBuffer_->available(); }
 
-  UInt16Array adc_buffer() {
-    UInt8Array byte_buffer = get_buffer();
-    UInt16Array result;
-    result.data = reinterpret_cast<uint16_t *>(byte_buffer.data);
-    result.length = dmaBuffer_->b_size;
-
-    uint16_t i = 0;
-    for (i = 0; i < dmaBuffer_->b_size; i++) {
-      result.data[i] = dmaBuffer_->p_elems[i];
-    }
-    return result;
-  }
-
-/*
-  UInt16Array adc_read() {
-    adc_read_active_ = true;
-    UInt8Array byte_buffer = get_buffer();
-    UInt16Array result;
-    result.data = reinterpret_cast<uint16_t *>(byte_buffer.data);
-    //result.length = dmaBuffer_->available();
-    result.length = dmaBuffer_->available() + (sizeof(uint32_t) /
-                                               sizeof(uint16_t));
-    uint32_t &adc_count = *(reinterpret_cast<uint32_t *>(result.data));
-    adc_count = adc_count_;
-    adc_count_ = 0;
-
-    uint16_t i = 0;
-    for (i = 0; i < result.length; i++) {
-      //result.data[i] = dmaBuffer_->read();
-      result.data[i + 2] = dmaBuffer_->read();
-    }
-    adc_read_active_ = false;
-    return result;
-  }
-*/
   /////////////// METHODS TO SET/GET SETTINGS OF THE ADC ////////////////////
-
-  //! Set the voltage reference you prefer, default is 3.3 V (VCC)
-  /*!
-  * \param type can be ADC_REF_3V3, ADC_REF_1V2 (not for Teensy LC) or ADC_REF_EXT.
-  *
-  *  It recalibrates at the end.
-  */
-  void setReference(uint8_t type, int8_t adc_num) {
-    adc_->setReference(type, adc_num);
-  }
-
-
 
   void on_tick() {
     if (adc_read_active_) return;
@@ -508,29 +431,37 @@ public:
     return adc_->getMaxValue(adc_num);
   }
 
-
-  //! Sets the conversion speed (changes the ADC clock, ADCK)
-  /**
-  * \param speed can be ADC_VERY_LOW_SPEED, ADC_LOW_SPEED, ADC_MED_SPEED, ADC_HIGH_SPEED_16BITS, ADC_HIGH_SPEED or ADC_VERY_HIGH_SPEED.
-  *
-  * ADC_VERY_LOW_SPEED is guaranteed to be the lowest possible speed within specs for resolutions less than 16 bits (higher than 1 MHz),
-  * it's different from ADC_LOW_SPEED only for 24, 4 or 2 MHz bus frequency.
-  * ADC_LOW_SPEED is guaranteed to be the lowest possible speed within specs for all resolutions (higher than 2 MHz).
-  * ADC_MED_SPEED is always >= ADC_LOW_SPEED and <= ADC_HIGH_SPEED.
-  * ADC_HIGH_SPEED_16BITS is guaranteed to be the highest possible speed within specs for all resolutions (lower or eq than 12 MHz).
-  * ADC_HIGH_SPEED is guaranteed to be the highest possible speed within specs for resolutions less than 16 bits (lower or eq than 18 MHz).
-  * ADC_VERY_HIGH_SPEED may be out of specs, it's different from ADC_HIGH_SPEED only for 48, 40 or 24 MHz bus frequency.
-  *
-  * Additionally the conversion speed can also be ADC_ADACK_2_4, ADC_ADACK_4_0, ADC_ADACK_5_2 and ADC_ADACK_6_2,
-  * where the numbers are the frequency of the ADC clock (ADCK) in MHz and are independent on the bus speed.
-  * This is useful if you are using the Teensy at a very low clock frequency but want faster conversions,
-  * but if F_BUS<F_ADCK, you can't use ADC_VERY_HIGH_SPEED for sampling speed.
-  *
-  */
   void setConversionSpeed(uint8_t speed, int8_t adc_num) {
-    adc_->setConversionSpeed(speed, adc_num);
+    //! Sets the conversion speed (changes the ADC clock, ADCK)
+    /**
+     * \param speed can be ADC_VERY_LOW_SPEED, ADC_LOW_SPEED, ADC_MED_SPEED, ADC_HIGH_SPEED_16BITS, ADC_HIGH_SPEED or ADC_VERY_HIGH_SPEED.
+     *
+     * ADC_VERY_LOW_SPEED is guaranteed to be the lowest possible speed within specs for resolutions less than 16 bits (higher than 1 MHz),
+     * it's different from ADC_LOW_SPEED only for 24, 4 or 2 MHz bus frequency.
+     * ADC_LOW_SPEED is guaranteed to be the lowest possible speed within specs for all resolutions (higher than 2 MHz).
+     * ADC_MED_SPEED is always >= ADC_LOW_SPEED and <= ADC_HIGH_SPEED.
+     * ADC_HIGH_SPEED_16BITS is guaranteed to be the highest possible speed within specs for all resolutions (lower or eq than 12 MHz).
+     * ADC_HIGH_SPEED is guaranteed to be the highest possible speed within specs for resolutions less than 16 bits (lower or eq than 18 MHz).
+     * ADC_VERY_HIGH_SPEED may be out of specs, it's different from ADC_HIGH_SPEED only for 48, 40 or 24 MHz bus frequency.
+     *
+     * Additionally the conversion speed can also be ADC_ADACK_2_4, ADC_ADACK_4_0, ADC_ADACK_5_2 and ADC_ADACK_6_2,
+     * where the numbers are the frequency of the ADC clock (ADCK) in MHz and are independent on the bus speed.
+     * This is useful if you are using the Teensy at a very low clock frequency but want faster conversions,
+     * but if F_BUS<F_ADCK, you can't use ADC_VERY_HIGH_SPEED for sampling speed.
+     *
+     */
+    adc_->setConversionSpeed((ADC_CONVERSION_SPEED)speed, adc_num);
   }
 
+  void setReference(uint8_t type, int8_t adc_num) {
+    //! Set the voltage reference you prefer, default is 3.3 V (VCC)
+    /*!
+     * \param type can be ADC_REF_3V3, ADC_REF_1V2 (not for Teensy LC) or ADC_REF_EXT.
+     *
+     *  It recalibrates at the end.
+     */
+    adc_->setReference((ADC_REFERENCE)type, adc_num);
+  }
 
   //! Sets the sampling speed
   /** Increase the sampling speed for low impedance sources, decrease it for higher impedance ones.
@@ -543,7 +474,7 @@ public:
   * ADC_VERY_HIGH_SPEED is the highest possible sampling speed (0 ADCK added).
   */
   void setSamplingSpeed(uint8_t speed, int8_t adc_num) {
-    adc_->setSamplingSpeed(speed, adc_num);
+    adc_->setSamplingSpeed((ADC_SAMPLING_SPEED)speed, adc_num);
   }
 
   uint32_t benchmark_flops(uint32_t N) {
